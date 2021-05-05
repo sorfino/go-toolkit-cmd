@@ -30,7 +30,8 @@ type BatchPullRequestOption struct {
 
 	authorName  string
 	authorEmail string
-	Head        string `yaml:"head"` // name of the base branch, for instance, "feature/large-scale-change"
+	Head        string `yaml:"head"`  // name of the base branch, for instance, "feature/large-scale-change"
+	Delay       string `yaml:"delay"` // delay between PR creation (to avoid abuse errors from GH API)
 }
 
 func (b BatchPullRequestOption) validate() error {
@@ -125,6 +126,8 @@ func (f *BatchPullRequestCommand) Do(ctx context.Context) ([]string, error) {
 	f.options.authorName = u.GetName()
 	f.options.authorEmail = u.GetEmail()
 
+	delay, _ := time.ParseDuration(f.options.Delay)
+
 	urls := make([]string, 0)
 	err = f.options.Range(ctx, func(option pullRequestCreationOptions) error {
 		cmd := pullRequestCommand{
@@ -132,6 +135,7 @@ func (f *BatchPullRequestCommand) Do(ctx context.Context) ([]string, error) {
 			client:  f.client,
 		}
 
+		time.Sleep(delay)
 		prURL, err := cmd.do(ctx)
 		if prURL != "" {
 			urls = append(urls, prURL)
