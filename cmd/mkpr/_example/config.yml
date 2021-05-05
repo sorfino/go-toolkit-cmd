@@ -10,8 +10,8 @@
     - repository: fury_mpcs-tokenization-api
       base: develop
   # The local file is separated by its target location by a semi-colon.
-	# If the file should be in the same location with the same name, you can just put the file name and omit the repetition.
-	# Example: README.md,main.go:github/examples/commitpr/main.go
+  # If the file should be in the same location with the same name, you can just put the file name and omit the repetition.
+  # Example: README.md,main.go:github/examples/commitpr/main.go
   files:
     - _example/.golangci.yml:.golangci.yml
     
